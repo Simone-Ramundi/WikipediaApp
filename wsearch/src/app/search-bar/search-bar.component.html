@@ -1,4 +1,7 @@
-<!--<input  (input)="onInput($event.target.value)"/>-->
+<!-- CLASSIC METHOD
+<input  (input)="onInput($event.target.value)"/>
+-->
+
 <!-- NEW METHOD WITH LESS CODE-->
 <form (submit)="onFormSubmit($event)">
   <input  (input)="term = $event.target.value" />
