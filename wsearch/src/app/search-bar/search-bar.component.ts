@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output} from '@angular/core';
+import {WikipediaService} from "../wikipedia.service";
 
 @Component({
   selector: 'app-search-bar',
@@ -6,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent implements OnInit {
+  @Output() submitted = new EventEmitter<string>();
   term = '';
   constructor() { }
+
 
   ngOnInit(): void {
   }
@@ -18,7 +21,9 @@ export class SearchBarComponent implements OnInit {
   }
   */
   onFormSubmit(event:any){
+    // It avoids submission if enter has not been pressed yet.
     event.preventDefault()
-    console.log(this.term)
+    // Pass communication to Parents
+    this.submitted.emit(this.term);
   }
 }
