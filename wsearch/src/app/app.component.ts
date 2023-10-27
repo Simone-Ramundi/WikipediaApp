@@ -7,15 +7,16 @@ import {WikipediaService} from "./wikipedia.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  pages = [];
+  pages : any[]=[];
   constructor(private wikipedia: WikipediaService) {}
   onTerm(term:string){
-    // console.log(`I am the app and here is the term`, term)
-    // const results = this.wikipedia.search(term);
-    // console.log(results);
-    this.wikipedia.search(term).subscribe((response:any)=> {
+      // console.log(`I am the app and here is the term`, term)
+      // const results = this.wikipedia.search(term);
+      // console.log(results);
+    /* WE PASS 'PAGES' INSTEAD OF RESPONSE */
+    this.wikipedia.search(term).subscribe((pages)=> {
       // console.log(response);
-      this.pages = response.query.search;
+      this.pages = pages;
     });
   }
 }

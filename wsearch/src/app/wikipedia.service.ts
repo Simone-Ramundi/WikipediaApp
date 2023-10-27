@@ -1,45 +1,20 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
-/* 1. We import the observable */
-import {Observable} from "rxjs";
-/* 5. Import the pluck operator */
+/* 1. Import the pluck operator */
 import { pluck } from "rxjs/operators";
 
-/* 4. Create a new interface */
-interface Car {
-  year: number;
-  color: string;
-  running: boolean;
-  make: {
-    companyName: string;
-    dateCreated: number;
+/* 3. Create a new interface WikipediaResponse */
+
+interface WikipediaResponse {
+  query: {
+    search: {
+      title: string;
+      snippet: string;
+      pageid: number;
+    }[];
   }
-
 }
-
-/* 2. Create an observable */
-const observable = new Observable<Car>((observer) => {
-  observer.next({
-    year: 2000,
-    color: 'red',
-    running: true,
-    make: {
-      companyName: 'Lamborghini',
-      dateCreated: 1950
-    }
-  });
-});
-
-/* 3 Make sure subscribe it */
-observable.subscribe(value => {
-  console.log(value);
-/* 6. Put the pipe with pluck operator */
-}).pipe(
-  pluck('make', 'name')
-);
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +24,9 @@ export class WikipediaService {
   }
   search(term: string){
     // return 'I am wiki search results';
-    return this.http.get('https://en.wikipedia.org/w/api.php', {
+
+    /* 4. '<>' WE PUT THE INTERFACE WE NEED IN ORDER TO UNDERSTAND */
+    return this.http.get<WikipediaResponse>('https://en.wikipedia.org/w/api.php', {
       params: {
         action: 'query',
         format: 'json',
@@ -58,7 +35,10 @@ export class WikipediaService {
         srsearch: term,
         origin: '*'
       }
-    });
+      /* 2. Put the pipe and pluck operator */
+    }).pipe(
+      pluck('query','search')
+    )
   }
 }
 
